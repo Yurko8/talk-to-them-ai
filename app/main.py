@@ -4,6 +4,7 @@ from app.agent import create_agent
 from app.schemas import AskRequest, AskResponse
 from langchain_community.chat_message_histories import RedisChatMessageHistory
 from app.config import REDIS_URL
+from app.utils import make_session_id
 
 
 app = FastAPI(title="Talk to Them AI")
@@ -18,21 +19,27 @@ app.add_middleware(
 @app.post("/ask", response_model=AskResponse)
 def ask_scientist(req: AskRequest):
     try:
-        session_id = f"{req.user_id}:{req.character_id}"
-        agent = create_agent(req.character_id)
+        session_id = make_session_id(req.user_id, req.character_id)
+
+        try:
+            agent = create_agent(req.character_id)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
 
         result = agent.invoke(
             {"input": req.question},
             config={"configurable": {"session_id": session_id}}
         )
 
-        return {"answer": result.content}
+        content = result.content
+        metadata = getattr(result, "response_metadata", {})
+
+        return AskResponse(
+            answer=content,
+            character_id=req.character_id,
+            model="gpt-3.5-turbo",
+            tokens_used=metadata.get("token_usage", {}).get("total_tokens")
+        )
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-@app.post("/clear_memory")
-def clear_memory(user_id: str, character_id: str):
-    session_id = f"{user_id}:{character_id}"
-    history = RedisChatMessageHistory(session_id=session_id, url=REDIS_URL)
-    history.clear()
-    return {"status": "cleared"}

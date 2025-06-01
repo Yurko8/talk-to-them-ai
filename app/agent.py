@@ -6,6 +6,7 @@ from langchain_core.prompts import MessagesPlaceholder
 from app.prompts import CHARACTER_PROMPTS
 from app.config import OPENAI_API_KEY, REDIS_URL
 from typing import Callable
+from app.utils import make_session_id
 
 def create_agent(character_id: str) -> RunnableWithMessageHistory:
     if character_id not in CHARACTER_PROMPTS:
@@ -28,9 +29,9 @@ def create_agent(character_id: str) -> RunnableWithMessageHistory:
     chain = prompt | llm
 
     def get_history(session_id: str):
-        return RedisChatMessageHistory(session_id=session_id, url=REDIS_URL)
+        return RedisChatMessageHistory(session_id=make_session_id(session_id), url=REDIS_URL)
 
-    # ✅ Pass 'chain' as positional argument
+
     return RunnableWithMessageHistory(
         chain,
         get_session_history=get_history,
