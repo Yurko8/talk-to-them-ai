@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "talk-to-them"
+version = "0.1.0"
+description = ""
+authors = ["Yurko"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = "^0.115.12"
+uvicorn = "^0.34.3"
+langchain = "^0.3.25"
+openai = "^1.82.1"
+redis = "^6.2.0"
+python-dotenv = "^1.1.0"
+langchain-community = "^0.3.24"
+langchain-openai = "^0.3.18"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+httpx = "^0.28.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
