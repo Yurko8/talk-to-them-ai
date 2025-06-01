@@ -1,10 +1,10 @@
-# app/main.py
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.agent import create_agent
 from app.schemas import AskRequest, AskResponse
-from langchain.memory import ConversationBufferMemory
+from langchain_community.chat_message_histories import RedisChatMessageHistory
+from app.config import REDIS_URL
+
 
 app = FastAPI(title="Talk to Them AI")
 
@@ -15,31 +15,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-memory_store = {}  
-
 @app.post("/ask", response_model=AskResponse)
 def ask_scientist(req: AskRequest):
     try:
-        key = f"{req.user_id}:{req.character_id}"
+        session_id = f"{req.user_id}:{req.character_id}"
+        agent = create_agent(req.character_id)
 
-
-        if key not in memory_store:
-            memory_store[key] = ConversationBufferMemory(
-                return_messages=True,
-                memory_key="chat_history"
-            )
-
-        memory = memory_store[key]
-        agent_bundle = create_agent(req.character_id, memory)
-
-        context = memory.load_memory_variables({})
-        result = agent_bundle["chain"].invoke({
-            "input": req.question,
-            "chat_history": context.get("chat_history", [])
-        })
-        memory.save_context({"input": req.question}, {"output": result.content})
+        result = agent.invoke(
+            {"input": req.question},
+            config={"configurable": {"session_id": session_id}}
+        )
 
         return {"answer": result.content}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/clear_memory")
+def clear_memory(user_id: str, character_id: str):
+    session_id = f"{user_id}:{character_id}"
+    history = RedisChatMessageHistory(session_id=session_id, url=REDIS_URL)
+    history.clear()
+    return {"status": "cleared"}
