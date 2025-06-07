@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -11,22 +10,13 @@ const subjects = [
   { name: "Astronomy", icon: "🔭", description: "Stars and cosmos" },
   { name: "Engineering", icon: "⚙️", description: "Design and innovation" },
   { name: "History", icon: "📜", description: "Past civilizations" },
-  { name: "Philosophy", icon: "🧠", description: "Thought and wisdom" },
-  { name: "Literature", icon: "📚", description: "Stories and poetry" },
-  { name: "Art History", icon: "🎨", description: "Creative expression" },
-  { name: "Linguistics", icon: "💬", description: "Language and communication" },
-  { name: "Economics", icon: "💰", description: "Markets and trade" },
-  { name: "Psychology", icon: "🧩", description: "Mind and behavior" },
-  { name: "Political Science", icon: "🏛️", description: "Government and society" },
-  { name: "Sociology", icon: "👥", description: "Social structures" },
-  { name: "Music", icon: "🎵", description: "Harmony and rhythm" },
-  { name: "Medicine", icon: "⚕️", description: "Health and healing" },
-  { name: "Law", icon: "⚖️", description: "Justice and rights" },
-  { name: "Religious Studies", icon: "✝️", description: "Faith and spirituality" }
+  { name: "Philosophy", icon: "🧠", description: "Thought and wisdom" }
 ];
 
 const Subjects = () => {
   const navigate = useNavigate();
+
+  const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
@@ -59,7 +49,7 @@ const Subjects = () => {
               key={subject.name}
               className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer group hover:scale-105 hover:shadow-xl animate-fade-in"
               style={{ animationDelay: `${index * 0.05}s` }}
-              onClick={() => navigate(`/subject/${subject.name.toLowerCase().replace(' ', '-')}`)}
+              onClick={() => navigate(`/subject/${slugify(subject.name)}`)}
             >
               <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
                 {subject.icon}

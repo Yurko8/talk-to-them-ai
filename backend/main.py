@@ -7,10 +7,9 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 import logging
 
-from app.agent import create_agent
-from app.schemas import AskRequest, AskResponse
-from app.config import REDIS_URL, USE_REDIS
-from app.utils import make_session_id
+from agent import create_agent
+from schemas import AskRequest, AskResponse
+from utils import make_session_id
 
 
 logging.basicConfig(level=logging.INFO)
@@ -40,16 +39,15 @@ def rate_limit_handler(request: Request, exc):
 def health():
     return {"status": "ok"}
 
-#Main /ask endpoint
 @app.post("/ask", response_model=AskResponse)
-@limiter.limit("5/minute")   # Rate limit setting
+@limiter.limit("5/minute")
 def ask_scientist(req: AskRequest, request: Request):
     try:
         session_id = make_session_id(req.user_id, req.character_id)
         logging.info(f"Request from {req.user_id} to {req.character_id}: {req.question}")
 
         try:
-            agent = create_agent(req.character_id)
+            agent = create_agent(req.character_id, req.user_id)
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e))
 

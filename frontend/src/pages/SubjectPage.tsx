@@ -1,41 +1,86 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Search, X } from "lucide-react";
 
-const physicsPersonalities = [
-  "Albert Einstein",
-  "Isaac Newton", 
-  "Marie Curie",
-  "Niels Bohr",
-  "Richard Feynman",
-  "Stephen Hawking",
-  "Galileo Galilei",
-  "Max Planck"
-];
+const subjectCharacterMap: Record<
+  string,
+  { id: string; name: string; avatar: string }[]
+> = {
+  physics: [
+    { id: "einstein", name: "Albert Einstein", avatar: "👨‍🔬" },
+    { id: "feynman", name: "Richard Feynman", avatar: "🌀" },
+    { id: "newton", name: "Isaac Newton", avatar: "🍎" },
+  ],
+  chemistry: [
+    { id: "curie", name: "Marie Curie", avatar: "⚗️" },
+    { id: "mendeleev", name: "Dmitri Mendeleev", avatar: "📊" },
+    { id: "pauling", name: "Linus Pauling", avatar: "🧪" },
+  ],
+  mathematics: [
+    { id: "euclid", name: "Euclid", avatar: "📐" },
+    { id: "gauss", name: "Carl Gauss", avatar: "📈" },
+    { id: "lovelace", name: "Ada Lovelace", avatar: "💻" },
+  ],
+  biology: [
+    { id: "darwin", name: "Charles Darwin", avatar: "🐦" },
+    { id: "franklin", name: "Rosalind Franklin", avatar: "🧬" },
+    { id: "mendel", name: "Gregor Mendel", avatar: "🌱" },
+  ],
+  astronomy: [
+    { id: "galileo", name: "Galileo Galilei", avatar: "🔭" },
+    { id: "sagan", name: "Carl Sagan", avatar: "🌌" },
+    { id: "rubin", name: "Vera Rubin", avatar: "🌠" },
+  ],
+  engineering: [
+    { id: "tesla", name: "Nikola Tesla", avatar: "⚡️" },
+    { id: "brunel", name: "Isambard Brunel", avatar: "🛤️" },
+    { id: "lamarr", name: "Hedy Lamarr", avatar: "📡" },
+  ],
+  "computer-science": [
+    { id: "turing", name: "Alan Turing", avatar: "🧠" },
+    { id: "hopper", name: "Grace Hopper", avatar: "🖥️" },
+    { id: "knuth", name: "Donald Knuth", avatar: "📘" },
+  ],
+  history: [
+    { id: "herodotus", name: "Herodotus", avatar: "📜" },
+    { id: "zinn", name: "Howard Zinn", avatar: "🏛️" },
+    { id: "beard", name: "Mary Beard", avatar: "🏺" },
+  ],
+  philosophy: [
+    { id: "socrates", name: "Socrates", avatar: "🤔" },
+    { id: "beauvoir", name: "Simone de Beauvoir", avatar: "📚" },
+    { id: "nietzsche", name: "Friedrich Nietzsche", avatar: "🦅" },
+  ],
+};
 
 const funFacts = [
   "In space, astronauts can cry—but their tears don't fall.",
   "A photon takes 40,000 years to travel from the Sun's core to its surface.",
   "Quantum entanglement allows particles to affect each other instantly across vast distances.",
   "Time moves slower in stronger gravitational fields.",
-  "The speed of light is the universal speed limit—nothing can go faster."
+  "The speed of light is the universal speed limit—nothing can go faster.",
 ];
 
 const SubjectPage = () => {
   const navigate = useNavigate();
-  const { subject } = useParams();
+  const { subject = "physics" } = useParams<{ subject: string }>();
   const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [funFact] = useState(funFacts[Math.floor(Math.random() * funFacts.length)]);
+  const [suggestions, setSuggestions] = useState<
+    { id: string; name: string; avatar: string }[]
+  >([]);
+  const [funFact] = useState(
+    funFacts[Math.floor(Math.random() * funFacts.length)]
+  );
+
+  const characters = subjectCharacterMap[subject] || [];
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (query.length > 0) {
-      const filtered = physicsPersonalities.filter(person =>
-        person.toLowerCase().includes(query.toLowerCase())
+      const filtered = characters.filter((c) =>
+        c.name.toLowerCase().includes(query.toLowerCase())
       );
       setSuggestions(filtered);
     } else {
@@ -43,11 +88,11 @@ const SubjectPage = () => {
     }
   };
 
-  const selectPerson = (person: string) => {
-    navigate(`/chat/${person.toLowerCase().replace(' ', '-')}`);
+  const selectPerson = (id: string) => {
+    navigate(`/chat/${id}`);
   };
 
-  const subjectName = subject?.charAt(0).toUpperCase() + subject?.slice(1) || "Physics";
+  const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
   const subjectIcon = subject === "physics" ? "⚛️" : "📚";
 
   return (
@@ -55,7 +100,10 @@ const SubjectPage = () => {
       {/* Navigation */}
       <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto">
         <div className="flex items-center space-x-8">
-          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center cursor-pointer" onClick={() => navigate('/')}>
+          <div
+            className="w-8 h-8 bg-white rounded-full flex items-center justify-center cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             <div className="w-6 h-6 bg-gray-900 rounded-full relative">
               <div className="absolute inset-1 bg-white rounded-full opacity-30"></div>
             </div>
@@ -77,7 +125,7 @@ const SubjectPage = () => {
             <div className="text-6xl mr-4">{subjectIcon}</div>
             <h1 className="text-5xl md:text-6xl font-bold">{subjectName}</h1>
           </div>
-          
+
           {/* Fun Fact */}
           <div className="mb-8">
             <p className="text-sm text-gray-400 mb-2">*FUN FACT GENERATED</p>
@@ -85,50 +133,27 @@ const SubjectPage = () => {
           </div>
         </div>
 
-        {/* Search Section */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Look for figure</h2>
-          <div className="relative">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search for a historical figure..."
-                className="pl-10 pr-10 py-4 bg-white text-black border-none rounded-lg text-lg"
-              />
-              {searchQuery && (
-                <X 
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 cursor-pointer hover:text-gray-600"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSuggestions([]);
-                  }}
-                />
-              )}
-            </div>
-            
-            {/* Search Suggestions */}
-            {suggestions.length > 0 && (
-              <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg mt-1 shadow-lg z-10">
-                {suggestions.map((person) => (
-                  <div
-                    key={person}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-black border-b border-gray-100 last:border-b-0"
-                    onClick={() => selectPerson(person)}
-                  >
-                    {person}
-                  </div>
-                ))}
-              </div>
-            )}
+        {/* Character Buttons */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-semibold mb-6">Choose a character</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {characters.map((char) => (
+              <button
+                key={char.id}
+                onClick={() => selectPerson(char.id)}
+                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-xl text-left shadow-md transition-all flex items-center space-x-3"
+              >
+                <span className="text-2xl">{char.avatar}</span>
+                <span className="text-lg font-medium">{char.name}</span>
+              </button>
+            ))}
           </div>
         </div>
 
         {/* See Who's Here Button */}
         <div className="text-center">
-          <Button 
-            onClick={() => navigate('/subjects')}
+          <Button
+            onClick={() => navigate("/subjects")}
             className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 px-12 py-4 text-lg rounded-full"
           >
             See who is here

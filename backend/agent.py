@@ -3,12 +3,11 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
 from langchain_community.chat_message_histories import RedisChatMessageHistory
 from langchain_core.prompts import MessagesPlaceholder
-from app.prompts import CHARACTER_PROMPTS
-from app.config import OPENAI_API_KEY, REDIS_URL
-from typing import Callable
-from app.utils import make_session_id
+from prompts import CHARACTER_PROMPTS
+from config import OPENAI_API_KEY, REDIS_URL
+from utils import make_session_id
 
-def create_agent(character_id: str) -> RunnableWithMessageHistory:
+def create_agent(character_id: str, user_id: str) -> RunnableWithMessageHistory:
     if character_id not in CHARACTER_PROMPTS:
         raise ValueError(f"Unknown character ID: {character_id}")
 
@@ -28,9 +27,11 @@ def create_agent(character_id: str) -> RunnableWithMessageHistory:
 
     chain = prompt | llm
 
-    def get_history(session_id: str):
-        return RedisChatMessageHistory(session_id=make_session_id(session_id), url=REDIS_URL)
-
+    def get_history(_: str):  # Ignoring LangChain's session_id arg
+        return RedisChatMessageHistory(
+            session_id=make_session_id(user_id, character_id),
+            url=REDIS_URL
+        )
 
     return RunnableWithMessageHistory(
         chain,
