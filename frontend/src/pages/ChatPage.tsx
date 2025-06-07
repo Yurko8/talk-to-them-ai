@@ -19,24 +19,24 @@ const personalities: { [key: string]: { name: string; description: string; avata
   einstein: {
     name: "Albert Einstein",
     description: "Theoretical physicist known for the theory of relativity",
-    avatar: "👨‍🔬"
-  },
-  newton: {
-    name: "Isaac Newton",
-    description: "Father of classical mechanics",
-    avatar: "🍎"
+    avatar: "/characters/einstein.png"
   },
   feynman: {
     name: "Richard Feynman",
     description: "Famous for his work in quantum mechanics and QED",
-    avatar: "🌀"
+    avatar: "/characters/feynman.png"
+  },
+  newton: {
+    name: "Isaac Newton",
+    description: "Father of classical mechanics",
+    avatar: "/characters/newton.png"
   },
 
   // Chemistry
   curie: {
     name: "Marie Curie",
     description: "Pioneer in radioactivity",
-    avatar: "⚗️"
+    avatar: "/characters/curie.png"
   },
   mendeleev: {
     name: "Dmitri Mendeleev",
@@ -287,10 +287,16 @@ const ChatPage = () => {
       {/* Video Section */}
       <div className="text-center mb-8">
         <p className="text-sm text-gray-400 mb-4">*VIDEO WITH FACE MOVING</p>
-        <div className="w-80 h-80 mx-auto bg-gray-800 rounded-lg overflow-hidden border-4 border-gray-700">
-          <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
+        <div className="w-80 h-80 mx-auto bg-gray-800 rounded-lg overflow-hidden border-4 border-gray-700 flex items-center justify-center">
+          {character.avatar.endsWith(".png") ? (
+            <img
+              src={character.avatar}
+              alt={character.name}
+              className="w-3/4 h-3/4 object-contain"
+            />
+          ) : (
             <div className="text-8xl">{character.avatar}</div>
-          </div>
+          )}
         </div>
         <p className="text-sm text-gray-400 mt-4">{character.description}</p>
         <p className="text-xs text-gray-500">*FUN FACT GENERATED</p>
