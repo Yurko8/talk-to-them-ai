@@ -4,6 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Send } from "lucide-react";
 
+import 'katex/dist/katex.min.css';
+import { BlockMath, InlineMath } from 'react-katex';
+
 interface Message {
   id: number;
   text: string;
@@ -166,6 +169,23 @@ const personalities: { [key: string]: { name: string; description: string; avata
   }
 };
 
+// Helper function to parse and render LaTeX math in message text
+const renderMessageWithMath = (text: string) => {
+  const parts = text.split(/(\$\$.*?\$\$|\$.*?\$|\\\[.*?\\\])/g).filter(Boolean);
+
+  return parts.map((part, index) => {
+    if (part.startsWith('$$') || part.startsWith('\\[')) {
+      const content = part.replace(/^\$\$|^\[|\\\[|\\\]|\$\$$/g, '');
+      return <BlockMath key={index}>{content}</BlockMath>;
+    }
+    if (part.startsWith('$')) {
+      const content = part.replace(/^\$|\$$/g, '');
+      return <InlineMath key={index}>{content}</InlineMath>;
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
+
 const ChatPage = () => {
   const navigate = useNavigate();
   const { person } = useParams<{ person: string }>();
@@ -294,7 +314,9 @@ const ChatPage = () => {
                     : 'bg-gray-700 text-white rounded-bl-sm'
                 }`}
               >
-                <p className="text-sm">{message.text}</p>
+                <div className="text-sm whitespace-pre-wrap">
+                  {renderMessageWithMath(message.text)}
+                </div>
               </div>
             </div>
           ))}

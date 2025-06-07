@@ -27,7 +27,7 @@ def create_agent(character_id: str, user_id: str) -> RunnableWithMessageHistory:
 
     chain = prompt | llm
 
-    def get_history(_: str):  # Ignoring LangChain's session_id arg
+    def get_history(_: str): 
         return RedisChatMessageHistory(
             session_id=make_session_id(user_id, character_id),
             url=REDIS_URL
