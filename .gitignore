@@ -5,6 +5,7 @@ build/
 .vite/
 bun.lockb
 package-lock.json
+.vscode/
 
 # === Python / Backend ===
 __pycache__/
@@ -27,8 +28,23 @@ yarn-error.log*
 
 # === OS / Editor ===
 .DS_Store
-.vscode/
+Thumbs.db
 
-# === Misc ===
+# === Databases / Coverage ===
 *.sqlite3
 coverage/
+
+# === AI Assets ===
+# Ignore character avatar images
+frontend/public/characters/*.png
+
+# Optional: ignore audio/video responses if you're generating those
+frontend/public/audio/
+frontend/public/video/
+*.mp3
+*.wav
+*.webm
+*.ogg
+
+# Optional: ignore front-end dev cache (if applicable)
+*.tsbuildinfo

@@ -41,133 +41,134 @@ const personalities: { [key: string]: { name: string; description: string; avata
   mendeleev: {
     name: "Dmitri Mendeleev",
     description: "Creator of the periodic table",
-    avatar: "📊"
+    avatar: "/characters/mendeleev.png"
   },
   pauling: {
     name: "Linus Pauling",
     description: "Chemist and peace activist",
-    avatar: "🧪"
+    avatar: "/characters/pauling.png"
   },
 
   // Mathematics
   euclid: {
     name: "Euclid",
     description: "Father of geometry",
-    avatar: "📐"
+    avatar: "/characters/euclid.png"
   },
   gauss: {
     name: "Carl Gauss",
     description: "Prince of mathematicians",
-    avatar: "📈"
+    avatar: "/characters/gauss.png"
   },
   lovelace: {
     name: "Ada Lovelace",
     description: "First computer programmer",
-    avatar: "💻"
+    avatar: "/characters/lovelace.png"
   },
 
   // Biology
   darwin: {
     name: "Charles Darwin",
     description: "Father of evolution",
-    avatar: "🐦"
+    avatar: "/characters/darwin.png"
   },
   franklin: {
     name: "Rosalind Franklin",
     description: "Key contributor to DNA discovery",
-    avatar: "🧬"
+    avatar: "/characters/franklin.png"
   },
   mendel: {
     name: "Gregor Mendel",
     description: "Father of genetics",
-    avatar: "🌱"
+    avatar: "/characters/mendel.png"
   },
 
   // Astronomy
   galileo: {
     name: "Galileo Galilei",
     description: "Astronomer and physicist",
-    avatar: "🔭"
+    avatar: "/characters/galileo.png"
   },
   sagan: {
     name: "Carl Sagan",
     description: "Popularized astronomy",
-    avatar: "🌌"
+    avatar: "/characters/sagan.png"
   },
   rubin: {
     name: "Vera Rubin",
     description: "Dark matter pioneer",
-    avatar: "🌠"
+    avatar: "/characters/rubin.png"
   },
 
   // Engineering
   tesla: {
     name: "Nikola Tesla",
     description: "Inventor and electrical engineer",
-    avatar: "⚡️"
+    avatar: "/characters/tesla.png"
   },
   brunel: {
     name: "Isambard Kingdom Brunel",
     description: "Famous civil engineer",
-    avatar: "🛤️"
+    avatar: "/characters/brunel.png"
   },
   lamarr: {
     name: "Hedy Lamarr",
     description: "Inventor and actress, co-invented frequency hopping",
-    avatar: "📡"
+    avatar: "/characters/lamarr.png"
   },
 
   // Computer Science
   turing: {
     name: "Alan Turing",
     description: "Father of computer science and AI",
-    avatar: "🧠"
+    avatar: "/characters/turing.png"
   },
   hopper: {
     name: "Grace Hopper",
     description: "Pioneer of computer programming",
-    avatar: "🖥️"
+    avatar: "/characters/hopper.png"
   },
   knuth: {
     name: "Donald Knuth",
     description: "Father of algorithm analysis",
-    avatar: "📘"
+    avatar: "/characters/knuth.png"
   },
 
   // History
   herodotus: {
     name: "Herodotus",
     description: "Ancient Greek historian",
-    avatar: "📜"
+    avatar: "/characters/herodotus.png"
   },
   zinn: {
     name: "Howard Zinn",
     description: "Historian and social activist",
-    avatar: "🏛️"
+    avatar: "/characters/zinn.png"
   },
   beard: {
     name: "Mary Beard",
     description: "Classical historian and author",
-    avatar: "🏺"
+    avatar: "/characters/beard.png"
   },
 
   // Philosophy
   socrates: {
     name: "Socrates",
     description: "Classical Greek philosopher",
-    avatar: "🤔"
+    avatar: "/characters/socrates.png"
   },
   beauvoir: {
     name: "Simone de Beauvoir",
     description: "Existentialist philosopher and feminist",
-    avatar: "📚"
+    avatar: "/characters/beauvoir.png"
   },
   nietzsche: {
     name: "Friedrich Nietzsche",
     description: "Philosopher, cultural critic, poet",
-    avatar: "🦅"
+    avatar: "/characters/nietzsche.png"
   }
 };
+
 
 // Helper function to parse and render LaTeX math in message text
 const renderMessageWithMath = (text: string) => {
