@@ -11,3 +11,6 @@ class AskResponse(BaseModel):
     character_id: str
     model: str
     tokens_used: Optional[int] = None
+    
+class FunFactRequest(BaseModel):
+    character_name: str

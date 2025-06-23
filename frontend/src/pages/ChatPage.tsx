@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { Send } from "lucide-react";
+import CharacterAnimation from "@/components/CharacterAnimation";
 
 import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
@@ -294,6 +295,14 @@ const personalities: {
   }
 };
 
+const getUserId = () => {
+  let id = localStorage.getItem("user_id");
+  if (!id) {
+    id = "user-" + Math.random().toString(36).substring(2, 10);
+    localStorage.setItem("user_id", id);
+  }
+  return id;
+};
 
 const renderMessageWithMath = (text: string) => {
   const parts = text.split(/(\$\$.*?\$\$|\$.*?\$|\\\[.*?\\\])/g).filter(Boolean);
@@ -313,9 +322,11 @@ const renderMessageWithMath = (text: string) => {
 const ChatPage = () => {
   const navigate = useNavigate();
   const { person } = useParams<{ person: string }>();
-  const character = personalities[person || "einstein"] || personalities["einstein"];
-  
-  // Pick a random fun fact for each render (memoized so it doesn't change)
+  const characterKey = person || "einstein";
+  const character = personalities[characterKey] || personalities["einstein"];
+
+  const [animationStatus, setAnimationStatus] = useState<"blinking" | "listening" | "talking">("blinking");
+
   const randomFact = useMemo(() => {
     const facts = character.funFacts || [];
     return facts.length > 0 ? facts[Math.floor(Math.random() * facts.length)] : "No fun facts available.";
@@ -360,39 +371,44 @@ const ChatPage = () => {
       setMessages(prev =>
         prev.map(m => m.id === id ? { ...m, text: currentText } : m)
       );
-      if (index >= fullText.length) clearInterval(interval);
+      if (index >= fullText.length) {
+        clearInterval(interval);
+        setAnimationStatus("blinking");
+      }
     }, 20);
   };
 
-  const sendMessage = async () => {
-    if (!inputMessage.trim()) return;
+const sendMessage = async () => {
+  if (!inputMessage.trim()) return;
 
-    const userMessage: Message = {
-      id: messages.length + 1,
-      text: inputMessage,
-      isUser: true,
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage("");
-
-    try {
-      const answer = await askBackend("user-123", person || "einstein", inputMessage);
-      simulateTyping(answer);
-    } catch {
-      setMessages(prev => [
-        ...prev,
-        {
-          id: messages.length + 2,
-          text: "Sorry, something went wrong while contacting the AI.",
-          isUser: false,
-          timestamp: new Date()
-        }
-      ]);
-    }
+  const userMessage: Message = {
+    id: messages.length + 1,
+    text: inputMessage,
+    isUser: true,
+    timestamp: new Date()
   };
 
+  setMessages(prev => [...prev, userMessage]);
+  setInputMessage("");
+  setAnimationStatus("talking"); 
+
+  try {
+    const userId = getUserId();
+    const answer = await askBackend(userId, characterKey, inputMessage);
+    simulateTyping(answer); 
+  } catch {
+    setMessages(prev => [
+      ...prev,
+      {
+        id: messages.length + 2,
+        text: "Sorry, something went wrong while contacting the AI.",
+        isUser: false,
+        timestamp: new Date()
+      }
+    ]);
+    setAnimationStatus("blinking");
+  }
+};
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col">
       <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto w-full">
@@ -413,7 +429,7 @@ const ChatPage = () => {
       <div className="text-center mb-8">
         <p className="text-sm text-gray-400 mb-4">*VIDEO WITH FACE MOVING</p>
         <div className="w-80 h-80 mx-auto bg-gray-800 rounded-lg overflow-hidden border-4 border-gray-700 flex items-center justify-center">
-          <img src={character.avatar} alt={character.name} className="w-3/4 h-3/4 object-contain" />
+          <CharacterAnimation character={characterKey} status={animationStatus} />
         </div>
         <p className="text-sm text-gray-400 mt-4">{character.description}</p>
         <p className="text-sm text-gray-300 italic mt-2">🌟 Fun fact: {randomFact}</p>
@@ -441,7 +457,10 @@ const ChatPage = () => {
         <div className="flex gap-3 mb-6">
           <Input
             value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
+            onChange={(e) => {
+              setInputMessage(e.target.value);
+              setAnimationStatus("listening");
+            }}
             onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
             placeholder="Type your message..."
             className="flex-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"

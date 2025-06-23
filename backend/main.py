@@ -8,8 +8,8 @@ from slowapi.errors import RateLimitExceeded
 import logging
 
 from agent import create_agent
-from schemas import AskRequest, AskResponse
-from utils import make_session_id
+from schemas import AskRequest, AskResponse, FunFactRequest
+from utils import make_session_id, generate_dynamic_fact
 
 
 logging.basicConfig(level=logging.INFO)
@@ -70,3 +70,12 @@ def ask_scientist(req: AskRequest, request: Request):
     except Exception as e:
         logging.exception("Unhandled error in /ask")
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/fun_fact")
+def fun_fact(req: FunFactRequest):
+    try:
+        fact = generate_dynamic_fact(req.character_name)
+        return {"character_name": req.character_name, "fun_fact": fact}
+    except Exception as e:
+        logging.exception("Error generating fun fact")
+        raise HTTPException(status_code=500, detail="Could not generate fun fact")

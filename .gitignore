@@ -37,6 +37,8 @@ coverage/
 # === AI Assets ===
 # Ignore character avatar images
 frontend/public/characters/*.png
+/frontend/public/characters_new/**/*.mp4
+
 
 # Optional: ignore audio/video responses if you're generating those
 frontend/public/audio/
