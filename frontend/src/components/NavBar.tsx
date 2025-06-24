@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
+import { Link } from "react-router-dom";
 
 export default function NavBar({ showTitle = false }: { showTitle?: boolean }) {
   const navigate = useNavigate();
@@ -20,8 +21,8 @@ export default function NavBar({ showTitle = false }: { showTitle?: boolean }) {
       </div>
       <div className="flex items-center gap-4">
         <div className="hidden md:flex space-x-8">
-          <a href="/about" className="text-gray-300 hover:text-white transition-colors">About us</a>
-          <a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a>
+          <Link to="/about" className="text-gray-300 hover:text-white transition-colors">About us</Link>
+          <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link>
         </div>
         <ThemeToggle />
         <Button variant="ghost" className="text-gray-300 hover:text-white">Log in</Button>
