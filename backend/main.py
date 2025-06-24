@@ -1,15 +1,14 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from langchain_community.chat_message_histories import RedisChatMessageHistory
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 import logging
 
-from agent import create_agent
-from schemas import AskRequest, AskResponse, FunFactRequest
-from utils import make_session_id, generate_dynamic_fact
+from .agent import create_agent
+from .schemas import AskRequest, AskResponse, FunFactRequest
+from .utils import make_session_id, generate_dynamic_fact
 
 
 logging.basicConfig(level=logging.INFO)
@@ -41,7 +40,7 @@ def health():
 
 @app.post("/ask", response_model=AskResponse)
 @limiter.limit("5/minute")
-def ask_scientist(req: AskRequest, request: Request):
+async def ask_scientist(req: AskRequest, request: Request):
     try:
         session_id = make_session_id(req.user_id, req.character_id)
         logging.info(f"Request from {req.user_id} to {req.character_id}: {req.question}")
@@ -51,9 +50,9 @@ def ask_scientist(req: AskRequest, request: Request):
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e))
 
-        result = agent.invoke(
+        result = await agent.ainvoke(
             {"input": req.question},
-            config={"configurable": {"session_id": session_id}}
+            config={"configurable": {"session_id": session_id}},
         )
 
         content = result.content
@@ -72,9 +71,9 @@ def ask_scientist(req: AskRequest, request: Request):
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/fun_fact")
-def fun_fact(req: FunFactRequest):
+async def fun_fact(req: FunFactRequest):
     try:
-        fact = generate_dynamic_fact(req.character_name)
+        fact = await generate_dynamic_fact(req.character_name)
         return {"character_name": req.character_name, "fun_fact": fact}
     except Exception as e:
         logging.exception("Error generating fun fact")
