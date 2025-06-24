@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
+import { Link } from "react-router-dom";
+
 
 export default function NavBar({ showTitle = false }: { showTitle?: boolean }) {
   const navigate = useNavigate();

@@ -12,6 +12,7 @@ import SubjectPage from "./pages/SubjectPage";
 import ChatPage from "./pages/ChatPage";
 import NotFound from "./pages/NotFound";
 import AboutUsPage from "./pages/AboutUsPage";  // ← Import About Us page here
+import ContactPage from "./pages/ContactPage";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
 
           {/* Add About Us route */}
           <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           {/* Catch-all route for unmatched URLs */}
           <Route path="*" element={<NotFound />} />
