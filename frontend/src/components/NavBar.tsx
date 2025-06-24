@@ -1,14 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import { Link } from "react-router-dom";
 
-
-export default function NavBar({ showTitle = false }: { showTitle?: boolean }) {
-  const navigate = useNavigate();
-
-  return (
-    <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto w-full">
+      <Link to="/" className="flex items-center space-x-3">
+      </Link>
       <div
         className="flex items-center space-x-3 cursor-pointer"
         onClick={() => navigate("/")}
