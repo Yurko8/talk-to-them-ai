@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate, useParams } from "react-router-dom";
+import NavBar from "@/components/NavBar";
 import { useState } from "react";
 import { Search, X } from "lucide-react";
 
@@ -97,26 +98,7 @@ const SubjectPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
-      {/* Navigation */}
-      <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto">
-        <div className="flex items-center space-x-8">
-          <div
-            className="w-8 h-8 bg-white rounded-full flex items-center justify-center cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            <div className="w-6 h-6 bg-gray-900 rounded-full relative">
-              <div className="absolute inset-1 bg-white rounded-full opacity-30"></div>
-            </div>
-          </div>
-          <div className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">About us</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a>
-          </div>
-        </div>
-        <Button variant="ghost" className="text-gray-300 hover:text-white">
-          Log in
-        </Button>
-      </nav>
+      <NavBar />
 
       <div className="max-w-4xl mx-auto px-6 py-12">
         {/* Subject Header */}

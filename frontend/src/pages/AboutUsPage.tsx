@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import NavBar from "@/components/NavBar";
 
 const AboutUsPage = () => {
   const navigate = useNavigate();
@@ -7,19 +8,7 @@ const AboutUsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col">
       {/* Navigation */}
-      <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto w-full">
-        <div className="flex items-center space-x-8 cursor-pointer" onClick={() => navigate("/")}>
-          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-            <div className="w-6 h-6 bg-gray-900 rounded-full relative">
-              <div className="absolute inset-1 bg-white rounded-full opacity-30"></div>
-            </div>
-          </div>
-          <h1 className="text-xl font-bold">Talk to Them AI</h1>
-        </div>
-        <Button variant="ghost" className="text-gray-300 hover:text-white" onClick={() => navigate("/login")}>
-          Log in
-        </Button>
-      </nav>
+      <NavBar showTitle />
 
       <main className="flex-grow max-w-4xl mx-auto px-6 py-16">
         <h2 className="text-4xl font-extrabold mb-8 text-center">About Us</h2>
