@@ -95,56 +95,60 @@ const SubjectPage = () => {
 
   const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
   const subjectIcon = subject === "physics" ? "⚛️" : "📚";
-return (
-  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white animate-fade-in">
-    <NavBar />
 
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      {/* Subject Header */}
-      <div className="text-center mb-16">
-        <div className="flex items-center justify-center mb-6">
-          <div className="text-6xl mr-4">{subjectIcon}</div>
-          <h1 className="text-5xl md:text-6xl font-bold">{subjectName}</h1>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white animate-fade-in">
+      <NavBar />
+
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        {/* Subject Header */}
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center mb-6">
+            <div className="text-6xl mr-4">{subjectIcon}</div>
+            <h1 className="text-5xl md:text-6xl font-bold">{subjectName}</h1>
+          </div>
+
+          {/* Fun Fact */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-400 mb-2">*FUN FACT GENERATED</p>
+            <p className="text-lg text-gray-300">{funFact}</p>
+          </div>
         </div>
 
-        {/* Fun Fact */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-400 mb-2">*FUN FACT GENERATED</p>
-          <p className="text-lg text-gray-300">{funFact}</p>
+        {/* Character Buttons */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-semibold mb-6">Choose a character</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {characters.map((char) => (
+              <button
+                key={char.id}
+                onClick={() => selectPerson(char.id)}
+                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-xl text-left shadow-md transition-all flex items-center space-x-3"
+              >
+                <span className="text-2xl">{char.avatar}</span>
+                <span className="text-lg font-medium">{char.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Character Buttons */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-semibold mb-6">Choose a character</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {characters.map((char) => (
-            <button
-              key={char.id}
-              onClick={() => selectPerson(char.id)}
-              className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-xl text-left shadow-md transition-all flex items-center space-x-3"
-            >
-              <span className="text-2xl">{char.avatar}</span>
-              <span className="text-lg font-medium">{char.name}</span>
-            </button>
-          ))}
+        {/* See Who's Here Button */}
+        <div className="text-center">
+          <Button
+            onClick={() => navigate("/subjects")}
+            className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 px-12 py-4 text-lg rounded-full"
+          >
+            See who is here
+          </Button>
         </div>
-      </div>
 
-      {/* See Who's Here Button */}
-      <div className="text-center">
-        <Button
-          onClick={() => navigate("/subjects")}
-          className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 px-12 py-4 text-lg rounded-full"
-        >
-          See who is here
-        </Button>
-      </div>
-
-      {/* Hand Pointer Animation */}
-      <div className="flex justify-center mt-8">
-        <div className="text-4xl animate-bounce">👆</div>
+        {/* Hand Pointer Animation */}
+        <div className="flex justify-center mt-8">
+          <div className="text-4xl animate-bounce">👆</div>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+export default SubjectPage;
