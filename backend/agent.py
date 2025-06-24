@@ -3,9 +3,9 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
 from langchain_community.chat_message_histories import RedisChatMessageHistory
 from langchain_core.prompts import MessagesPlaceholder
-from prompts import CHARACTER_PROMPTS
-from config import OPENAI_API_KEY, REDIS_URL
-from utils import make_session_id
+from .prompts import CHARACTER_PROMPTS
+from .settings import settings
+from .utils import make_session_id
 
 def create_agent(character_id: str, user_id: str) -> RunnableWithMessageHistory:
     if character_id not in CHARACTER_PROMPTS:
@@ -22,7 +22,7 @@ def create_agent(character_id: str, user_id: str) -> RunnableWithMessageHistory:
     llm = ChatOpenAI(
         temperature=0.7,
         model="gpt-3.5-turbo",
-        api_key=OPENAI_API_KEY
+        api_key=settings.openai_api_key,
     )
 
     chain = prompt | llm
@@ -30,7 +30,7 @@ def create_agent(character_id: str, user_id: str) -> RunnableWithMessageHistory:
     def get_history(_: str): 
         return RedisChatMessageHistory(
             session_id=make_session_id(user_id, character_id),
-            url=REDIS_URL
+            url=settings.redis_url,
         )
 
     return RunnableWithMessageHistory(
