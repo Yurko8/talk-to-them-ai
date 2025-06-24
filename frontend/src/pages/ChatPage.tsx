@@ -410,7 +410,7 @@ const sendMessage = async () => {
   }
 };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col animate-fade-in">
       <NavBar />
 
       <div className="text-center mb-8">

@@ -20,7 +20,7 @@ const Subjects = () => {
   const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white animate-fade-in">
       {/* Navigation */}
       <NavBar />
 

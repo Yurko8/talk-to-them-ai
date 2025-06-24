@@ -8,7 +8,7 @@ const ContactPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col animate-fade-in">
       <NavBar showTitle />
       <main className="flex-grow max-w-3xl mx-auto px-6 py-16 space-y-8">
         <h2 className="text-4xl font-extrabold mb-8 text-center">Contact Us</h2>

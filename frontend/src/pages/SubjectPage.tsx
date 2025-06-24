@@ -97,7 +97,7 @@ const SubjectPage = () => {
   const subjectIcon = subject === "physics" ? "⚛️" : "📚";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white animate-fade-in">
       <NavBar />
 
       <div className="max-w-4xl mx-auto px-6 py-12">
