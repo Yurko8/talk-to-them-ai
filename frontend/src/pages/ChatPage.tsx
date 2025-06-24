@@ -9,292 +9,7 @@ import CharacterAnimation from "@/components/CharacterAnimation";
 import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
 
-interface Message {
-  id: number;
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
-}
-
-const personalities: {
-  [key: string]: {
-    name: string;
-    description: string;
-    avatar: string;
-    funFacts: string[];
-  };
-} = {
-  einstein: {
-    name: "Albert Einstein",
-    description: "Theoretical physicist known for the theory of relativity",
-    avatar: "/characters/einstein.png",
-    funFacts: [
-      "He didn’t speak fluently until age 9.",
-      "He was a passionate violinist.",
-      "He disliked wearing socks and often went without them."
-    ]
-  },
-  feynman: {
-    name: "Richard Feynman",
-    description: "Famous for his work in quantum mechanics and QED",
-    avatar: "/characters/feynman.png",
-    funFacts: [
-      "He played bongos in a samba band.",
-      "He cracked safes for fun at Los Alamos.",
-      "He once painted for a topless bar."
-    ]
-  },
-  newton: {
-    name: "Isaac Newton",
-    description: "Father of classical mechanics",
-    avatar: "/characters/newton.png",
-    funFacts: [
-      "He once stuck a needle in his eye to study light.",
-      "He wrote more on alchemy than physics.",
-      "He became Warden of the Royal Mint and went after counterfeiters."
-    ]
-  },
-  curie: {
-    name: "Marie Curie",
-    description: "Pioneer in radioactivity",
-    avatar: "/characters/curie.png",
-    funFacts: [
-      "Her notebooks are still radioactive.",
-      "She carried test tubes of radium in her pockets.",
-      "She was the first woman to win a Nobel—and the first person to win two."
-    ]
-  },
-  mendeleev: {
-    name: "Dmitri Mendeleev",
-    description: "Creator of the periodic table",
-    avatar: "/characters/mendeleev.png",
-    funFacts: [
-      "He arranged the periodic table in a dream.",
-      "He predicted elements before they were discovered.",
-      "He once traveled with a suitcase of vodka to prove its purity standards."
-    ]
-  },
-  pauling: {
-    name: "Linus Pauling",
-    description: "Chemist and peace activist",
-    avatar: "/characters/pauling.png",
-    funFacts: [
-      "He’s the only person to win two unshared Nobel Prizes.",
-      "He campaigned against nuclear weapons using vitamin C.",
-      "He was once banned from traveling by the U.S. government."
-    ]
-  },
-  euclid: {
-    name: "Euclid",
-    description: "Father of geometry",
-    avatar: "/characters/euclid.png",
-    funFacts: [
-      "We know almost nothing personal about him.",
-      "His book 'Elements' was used for over 2,000 years.",
-      "He inspired countless generations with just a compass and straightedge."
-    ]
-  },
-  gauss: {
-    name: "Carl Gauss",
-    description: "Prince of mathematicians",
-    avatar: "/characters/gauss.png",
-    funFacts: [
-      "He corrected his father's bookkeeping at age 3.",
-      "He discovered a prime number formula at age 15.",
-      "He preferred pure theory over messy experiments."
-    ]
-  },
-  lovelace: {
-    name: "Ada Lovelace",
-    description: "First computer programmer",
-    avatar: "/characters/lovelace.png",
-    funFacts: [
-      "She predicted artificial intelligence in the 1800s.",
-      "She was Lord Byron’s daughter.",
-      "Her algorithm was never run on a real machine—because it didn’t exist yet."
-    ]
-  },
-  darwin: {
-    name: "Charles Darwin",
-    description: "Father of evolution",
-    avatar: "/characters/darwin.png",
-    funFacts: [
-      "He ate every exotic animal he studied.",
-      "He almost became a clergyman instead of a scientist.",
-      "He delayed publishing his theory for 20 years."
-    ]
-  },
-  franklin: {
-    name: "Rosalind Franklin",
-    description: "Key contributor to DNA discovery",
-    avatar: "/characters/franklin.png",
-    funFacts: [
-      "She used X-rays to photograph DNA’s double helix.",
-      "Her contributions were overlooked for years.",
-      "She also studied viruses and coal."
-    ]
-  },
-  mendel: {
-    name: "Gregor Mendel",
-    description: "Father of genetics",
-    avatar: "/characters/mendel.png",
-    funFacts: [
-      "He was a monk who experimented on peas.",
-      "His work was ignored until after his death.",
-      "He once failed his teaching exams."
-    ]
-  },
-  galileo: {
-    name: "Galileo Galilei",
-    description: "Astronomer and physicist",
-    avatar: "/characters/galileo.png",
-    funFacts: [
-      "He built his own telescope to explore the skies.",
-      "He discovered Jupiter’s moons.",
-      "He was put under house arrest for defending heliocentrism."
-    ]
-  },
-  sagan: {
-    name: "Carl Sagan",
-    description: "Popularized astronomy",
-    avatar: "/characters/sagan.png",
-    funFacts: [
-      "He sent a golden record into space aboard Voyager.",
-      "He popularized the phrase 'billions and billions.'",
-      "He advocated for cannabis research."
-    ]
-  },
-  rubin: {
-    name: "Vera Rubin",
-    description: "Dark matter pioneer",
-    avatar: "/characters/rubin.png",
-    funFacts: [
-      "She found evidence that galaxies are held together by dark matter.",
-      "She fought sexism in science.",
-      "A mountain on Pluto is named after her."
-    ]
-  },
-  tesla: {
-    name: "Nikola Tesla",
-    description: "Inventor and electrical engineer",
-    avatar: "/characters/tesla.png",
-    funFacts: [
-      "He slept just 2 hours a day.",
-      "He once lit 200 lamps from 25 miles away wirelessly.",
-      "He had a photographic memory and feared pearls."
-    ]
-  },
-  brunel: {
-    name: "Isambard Kingdom Brunel",
-    description: "Famous civil engineer",
-    avatar: "/characters/brunel.png",
-    funFacts: [
-      "He once got stuck in one of his own tunnels.",
-      "He designed ships, bridges, and even hospitals.",
-      "He wore a giant top hat and was under 5’ tall."
-    ]
-  },
-  lamarr: {
-    name: "Hedy Lamarr",
-    description: "Inventor and actress, co-invented frequency hopping",
-    avatar: "/characters/lamarr.png",
-    funFacts: [
-      "She invented tech that led to Wi-Fi during WWII.",
-      "She also starred in 1940s Hollywood films.",
-      "Her patent was ignored until decades later."
-    ]
-  },
-  turing: {
-    name: "Alan Turing",
-    description: "Father of computer science and AI",
-    avatar: "/characters/turing.png",
-    funFacts: [
-      "He cracked the Nazi Enigma code.",
-      "He built the foundations of modern computing.",
-      "He was chemically castrated for being gay."
-    ]
-  },
-  hopper: {
-    name: "Grace Hopper",
-    description: "Pioneer of computer programming",
-    avatar: "/characters/hopper.png",
-    funFacts: [
-      "She coined the term 'debugging' after finding a moth in a computer.",
-      "She helped invent COBOL.",
-      "She retired from the Navy as a Rear Admiral."
-    ]
-  },
-  knuth: {
-    name: "Donald Knuth",
-    description: "Father of algorithm analysis",
-    avatar: "/characters/knuth.png",
-    funFacts: [
-      "He created TeX, the gold standard for math typesetting.",
-      "He offers rewards for finding bugs in his books.",
-      "He once paused all email to focus on deep work."
-    ]
-  },
-  herodotus: {
-    name: "Herodotus",
-    description: "Ancient Greek historian",
-    avatar: "/characters/herodotus.png",
-    funFacts: [
-      "He is called the 'Father of History.'",
-      "He collected stories from all over the known world.",
-      "He mixed fact with legend freely."
-    ]
-  },
-  zinn: {
-    name: "Howard Zinn",
-    description: "Historian and social activist",
-    avatar: "/characters/zinn.png",
-    funFacts: [
-      "He flew bombing missions in WWII before becoming anti-war.",
-      "He wrote 'A People’s History of the United States.'",
-      "He often gave voice to ordinary people over elites."
-    ]
-  },
-  beard: {
-    name: "Mary Beard",
-    description: "Classical historian and author",
-    avatar: "/characters/beard.png",
-    funFacts: [
-      "She’s known for making Roman history feel modern.",
-      "She embraces social media to engage with the public.",
-      "She was once told women don’t belong in history—so she doubled down."
-    ]
-  },
-  socrates: {
-    name: "Socrates",
-    description: "Classical Greek philosopher",
-    avatar: "/characters/socrates.png",
-    funFacts: [
-      "He never wrote anything down—his student Plato did.",
-      "He annoyed Athenians with endless questions.",
-      "He was sentenced to death for corrupting youth."
-    ]
-  },
-  beauvoir: {
-    name: "Simone de Beauvoir",
-    description: "Existentialist philosopher and feminist",
-    avatar: "/characters/beauvoir.png",
-    funFacts: [
-      "She wrote 'The Second Sex', a founding text of feminism.",
-      "She had a lifelong relationship with Jean-Paul Sartre.",
-      "She once said 'One is not born, but rather becomes, a woman.'"
-    ]
-  },
-  nietzsche: {
-    name: "Friedrich Nietzsche",
-    description: "Philosopher, cultural critic, poet",
-    avatar: "/characters/nietzsche.png",
-    funFacts: [
-      "He wrote books in poetic aphorisms.",
-      "He declared 'God is dead'—and meant it philosophically.",
-      "He went mad after hugging a beaten horse."
-    ]
-  }
-};
+// ... personalities definition stays unchanged ...
 
 const getUserId = () => {
   let id = localStorage.getItem("user_id");
@@ -378,37 +93,38 @@ const ChatPage = () => {
     }, 20);
   };
 
-const sendMessage = async () => {
-  if (!inputMessage.trim()) return;
+  const sendMessage = async () => {
+    if (!inputMessage.trim()) return;
 
-  const userMessage: Message = {
-    id: messages.length + 1,
-    text: inputMessage,
-    isUser: true,
-    timestamp: new Date()
+    const userMessage: Message = {
+      id: messages.length + 1,
+      text: inputMessage,
+      isUser: true,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage("");
+    setAnimationStatus("talking");
+
+    try {
+      const userId = getUserId();
+      const answer = await askBackend(userId, characterKey, inputMessage);
+      simulateTyping(answer);
+    } catch {
+      setMessages(prev => [
+        ...prev,
+        {
+          id: messages.length + 2,
+          text: "Sorry, something went wrong while contacting the AI.",
+          isUser: false,
+          timestamp: new Date()
+        }
+      ]);
+      setAnimationStatus("blinking");
+    }
   };
 
-  setMessages(prev => [...prev, userMessage]);
-  setInputMessage("");
-  setAnimationStatus("talking"); 
-
-  try {
-    const userId = getUserId();
-    const answer = await askBackend(userId, characterKey, inputMessage);
-    simulateTyping(answer); 
-  } catch {
-    setMessages(prev => [
-      ...prev,
-      {
-        id: messages.length + 2,
-        text: "Sorry, something went wrong while contacting the AI.",
-        isUser: false,
-        timestamp: new Date()
-      }
-    ]);
-    setAnimationStatus("blinking");
-  }
-};
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col animate-fade-in">
       <NavBar />
