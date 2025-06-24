@@ -6,7 +6,7 @@ const AboutUsPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col animate-fade-in">
       {/* Navigation */}
       <NavBar showTitle />
 
