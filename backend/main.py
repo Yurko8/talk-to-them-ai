@@ -6,9 +6,9 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 import logging
 
-from .agent import create_agent
-from .schemas import AskRequest, AskResponse, FunFactRequest
-from .utils import make_session_id, generate_dynamic_fact
+from agent import create_agent
+from schemas import AskRequest, AskResponse, FunFactRequest
+from utils import make_session_id, generate_dynamic_fact
 
 
 logging.basicConfig(level=logging.INFO)

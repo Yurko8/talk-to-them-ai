@@ -110,7 +110,7 @@ const SubjectPage = () => {
 
           {/* Fun Fact */}
           <div className="mb-8">
-            <p className="text-sm text-gray-400 mb-2">*FUN FACT GENERATED</p>
+            <h2 className="text-xl text-white font-bold mb-4">Did you know?</h2>
             <p className="text-lg text-gray-300">{funFact}</p>
           </div>
         </div>
@@ -132,20 +132,6 @@ const SubjectPage = () => {
           </div>
         </div>
 
-        {/* See Who's Here Button */}
-        <div className="text-center">
-          <Button
-            onClick={() => navigate("/subjects")}
-            className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 px-12 py-4 text-lg rounded-full"
-          >
-            See who is here
-          </Button>
-        </div>
-
-        {/* Hand Pointer Animation */}
-        <div className="flex justify-center mt-8">
-          <div className="text-4xl animate-bounce">👆</div>
-        </div>
       </div>
     </div>
   );

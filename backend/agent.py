@@ -3,9 +3,9 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
 from langchain_community.chat_message_histories import RedisChatMessageHistory
 from langchain_core.prompts import MessagesPlaceholder
-from .prompts import CHARACTER_PROMPTS
-from .settings import settings
-from .utils import make_session_id
+from prompts import CHARACTER_PROMPTS
+from settings import settings
+from utils import make_session_id
 
 def create_agent(character_id: str, user_id: str) -> RunnableWithMessageHistory:
     if character_id not in CHARACTER_PROMPTS:

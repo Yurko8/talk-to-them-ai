@@ -361,25 +361,31 @@ const ChatPage = () => {
     return data.answer;
   };
 
-  const simulateTyping = (fullText: string) => {
-    const id = messages.length + 2;
-    setMessages(prev => [...prev, { id, text: "", isUser: false, timestamp: new Date() }]);
+const simulateTyping = (fullText: string) => {
+  const id = messages.length + 2;
+  setMessages(prev => [...prev, { id, text: "", isUser: false, timestamp: new Date() }]);
 
-    let index = 0;
-    let currentText = "";
+  let index = 0;
+  let currentText = "";
 
-    const interval = setInterval(() => {
-      currentText += fullText[index];
-      index++;
-      setMessages(prev =>
-        prev.map(m => m.id === id ? { ...m, text: currentText } : m)
-      );
-      if (index >= fullText.length) {
-        clearInterval(interval);
-        setAnimationStatus("blinking");
-      }
-    }, 20);
-  };
+  // ✅ Trigger talking animation
+  setAnimationStatus("talking");
+
+  const interval = setInterval(() => {
+    currentText += fullText[index];
+    index++;
+    setMessages(prev =>
+      prev.map(m => m.id === id ? { ...m, text: currentText } : m)
+    );
+    if (index >= fullText.length) {
+      clearInterval(interval);
+
+      // ✅ Revert to blinking when done
+      setAnimationStatus("blinking");
+    }
+  }, 20);
+};
+
 
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -434,7 +440,6 @@ const ChatPage = () => {
       </nav>
 
       <div className="text-center mb-8">
-        <p className="text-sm text-gray-400 mb-4">*VIDEO WITH FACE MOVING</p>
         <div className="w-80 h-80 mx-auto bg-gray-800 rounded-lg overflow-hidden border-4 border-gray-700 flex items-center justify-center">
           <CharacterAnimation character={characterKey} status={animationStatus} />
         </div>
@@ -465,8 +470,6 @@ const ChatPage = () => {
             </div>
           ))}
         </div>
-
-        <p className="text-center text-sm text-gray-400 mb-4">*VOICE OVER (API)</p>
 
         <div className="flex gap-3 mb-6">
           <Input
