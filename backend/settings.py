@@ -1,12 +1,13 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
-from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    openai_api_key: str = Field("dummy", env="OPENAI_API_KEY")
-    redis_url: str = Field("redis://localhost:6379", env="REDIS_URL")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8"
+    )
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    openai_api_key: str = Field(..., env="OPENAI_API_KEY")
+    redis_url: str = Field(..., env="REDIS_URL")
 
 settings = Settings()

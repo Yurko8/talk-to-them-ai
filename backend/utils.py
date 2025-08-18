@@ -1,6 +1,6 @@
 import re
 import openai
-from settings import settings
+from .settings import settings
 
 openai_client = openai.AsyncOpenAI(api_key=settings.openai_api_key)
 
